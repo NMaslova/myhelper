@@ -3,6 +3,8 @@ import random
 from collections import Iterable
 from helper.exceptions import *
 
+from exceptions import WrongLengthException
+
 
 def check_iterable(seq):
     if isinstance(seq, Iterable):
