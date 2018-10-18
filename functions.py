@@ -4,7 +4,6 @@ from collections import Iterable
 from helper.exceptions import *
 
 
-
 def check_iterable(seq):
     if isinstance(seq, Iterable):
         return
@@ -20,7 +19,7 @@ def ncr(n, r):
     return f(n) // f(r) // f(n-r)
 
 
-def median_of_tree(dict_of_three):
+def median_of_three(dict_of_three):
     if len(dict_of_three) != 3:
         raise WrongLengthException
     minimum = min(dict_of_three)

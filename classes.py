@@ -1,7 +1,7 @@
-import math
 from enum import *
-from helper.functions import *
-import random
+import logging
+from exceptions import NoneValueException, WrongLengthException
+from functions import *
 
 
 class PivotChose(Enum):
@@ -67,7 +67,7 @@ class Sortable(object):
         if lena == 2:
             if array[0] > array[1]:
                 array[0], array[1] = array[1], array[0]
-                self.inversion_counter +=1
+                self.inversion_counter += 1
             return array
         array[0:half] = self.merge_sort_int(array[0:half])
         array[half:lena] = self.merge_sort_int(array[half:lena])
@@ -94,7 +94,7 @@ class Sortable(object):
         if approach == PivotChose.MIDDLE:
             middle = start + int((end - start - 1)/2)
             try:
-                pivot_index = median_of_tree({array[start]: start,
+                pivot_index = median_of_three({array[start]: start,
                                               array[middle]: middle,
                                               array[end-1]: end-1})
             except WrongLengthException:
@@ -110,8 +110,8 @@ class Sortable(object):
         # swapping pivot index and the start of the partitioned array
         if pivot_index != start:
             array[start], array[pivot_index] = array[pivot_index], array[start]
-        end_of_split = start # the index of the last element of the smaller part
-        end_of_partitioned = start + 1 # the index of the last bigger part element +1
+        end_of_split = start  # the index of the last element of the smaller part
+        end_of_partitioned = start + 1  # the index of the last bigger part element +1
 
         while end_of_partitioned < end:
             if array[end_of_partitioned] >= pivot:
@@ -121,7 +121,8 @@ class Sortable(object):
                     end_of_split += 1
                     end_of_partitioned += 1
                 else:
-                    array[end_of_partitioned], array[end_of_split + 1] = array[end_of_split + 1], array[end_of_partitioned]
+                    array[end_of_partitioned], array[end_of_split + 1] = array[end_of_split + 1], \
+                                                                         array[end_of_partitioned]
                     end_of_partitioned += 1
                     end_of_split += 1
 
@@ -151,7 +152,6 @@ class Reader(object):
 
     @staticmethod
     def file_to_dict(file_name):
-        logger = logging.getLogger(__name__)
         resulting_dict = {}
         with open(file_name) as data_file:
             for line in data_file:
@@ -167,7 +167,6 @@ class Reader(object):
 
     @staticmethod
     def file_to_list(file_name):
-        logger = logging.getLogger(__name__)
         resulting_list = []
         with open(file_name) as data_file:
             for line in data_file:
@@ -177,7 +176,6 @@ class Reader(object):
 
     @staticmethod
     def file_to_set_of_sets(file_name):
-        logger = logging.getLogger(__name__)
         resulting_set = set()
         with open(file_name) as data_file:
             for line in data_file:
@@ -209,9 +207,3 @@ class CustomArray(Sortable):
         logger = logging.getLogger(__name__)
         logger.debug("Converting array elements to int")
         Converter.make_array_of_int(self.array)
-
-
-
-
-
-
